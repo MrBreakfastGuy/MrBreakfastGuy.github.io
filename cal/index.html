@@ -342,10 +342,7 @@
     return n;
   }
 
-  // ev.dl marks a link James opened to fetch the file itself, rather than one
-  // a customer followed: save it straight away and offer nothing else.
-  var fileOnly = !!ev.dl;
-  eyebrow.textContent = fileOnly ? 'Calendar file' : 'Appointment';
+  eyebrow.textContent = 'Appointment';
   body.innerHTML = '';
 
   // Keep the bar attached to the label, so a wrap never leaves it dangling
@@ -372,35 +369,27 @@
 
   var actions = el('div', 'actions');
 
-  var apple = el('button', 'btn primary', fileOnly ? 'Save it again' : 'Add to Apple Calendar');
+  var apple = el('button', 'btn primary', 'Add to Apple Calendar');
   apple.type = 'button';
   apple.addEventListener('click', downloadIcs);
   actions.appendChild(apple);
 
-  if (!fileOnly) {
-    var g = el('a', 'btn', 'Add to Google Calendar');
-    g.href = googleUrl();
-    g.target = '_blank';
-    g.rel = 'noopener';
-    actions.appendChild(g);
+  var g = el('a', 'btn', 'Add to Google Calendar');
+  g.href = googleUrl();
+  g.target = '_blank';
+  g.rel = 'noopener';
+  actions.appendChild(g);
 
-    var o = el('a', 'btn', 'Add to Outlook');
-    o.href = outlookUrl();
-    o.target = '_blank';
-    o.rel = 'noopener';
-    actions.appendChild(o);
-  }
+  var o = el('a', 'btn', 'Add to Outlook');
+  o.href = outlookUrl();
+  o.target = '_blank';
+  o.rel = 'noopener';
+  actions.appendChild(o);
 
   body.appendChild(actions);
 
-  var hint = el('p', 'hint', fileOnly
-    ? 'Saving now. If your browser held it back, use the button above.'
-    : 'The Apple button saves a calendar file. On an iPhone it lands in Files or Downloads — tap it there and Calendar will offer to add it.');
+  var hint = el('p', 'hint', 'The Apple button saves a calendar file. On an iPhone it lands in Files or Downloads — tap it there and Calendar will offer to add it.');
   body.appendChild(hint);
-
-  // The click that opened this tab counts as the gesture, so most browsers
-  // allow the save. The button is there for the ones that don't.
-  if (fileOnly) setTimeout(downloadIcs, 150);
 
   }
 
