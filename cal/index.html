@@ -394,13 +394,19 @@
   body.appendChild(actions);
 
   var hint = el('p', 'hint', fileOnly
-    ? 'Saving now. If your browser held it back, use the button above.'
+    ? 'Saving to your Downloads, then this tab closes itself. If nothing arrives, your browser held the download back — use the button above.'
     : 'The Apple button saves a calendar file. On an iPhone it lands in Files or Downloads — tap it there and Calendar will offer to add it.');
   body.appendChild(hint);
 
   // The click that opened this tab counts as the gesture, so most browsers
-  // allow the save. The button is there for the ones that don't.
-  if (fileOnly) setTimeout(downloadIcs, 150);
+  // allow the save. Close up afterwards so nothing is left lying around; the
+  // button stays for the browsers that block it.
+  if (fileOnly) {
+    setTimeout(function () {
+      downloadIcs();
+      setTimeout(function () { try { window.close(); } catch (e) {} }, 1600);
+    }, 150);
+  }
 
   }
 
